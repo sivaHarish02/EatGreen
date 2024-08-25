@@ -42,3 +42,23 @@ exports.getUserOrders = async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 };
+
+exports.deleteOrder = async (req, res) => {
+    console.log("deleteOrder");
+
+    try {
+        const orderId = req.params.id;
+
+        // Find and delete the order
+        const result = await Order.findByIdAndDelete(orderId);
+
+        if (!result) {
+            return res.status(404).json({ message: 'Order not found' });
+        }
+
+        res.status(200).json({ message: 'Order deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting order:', error);
+        res.status(500).json({ message: 'Error deleting order' });
+    }
+};
